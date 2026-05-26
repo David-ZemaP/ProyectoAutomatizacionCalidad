@@ -1,0 +1,7 @@
+reports/
+screenshot_*.html
+screenshot_*.png
+.run_once/
+vendor/
+.bundle/
+*.log
