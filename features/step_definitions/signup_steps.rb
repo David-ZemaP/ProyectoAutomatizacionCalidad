@@ -107,7 +107,7 @@ Entonces("debería mostrar un mensaje de error") do
 end
 
 Entonces("debería aparecer un alert con el mensaje {string}") do |expected_message|
-  sleep 2
+  sleep 1
   expect(page.driver.browser.switch_to.alert.text).to eq(expected_message)
   page.driver.browser.switch_to.alert.accept
 end

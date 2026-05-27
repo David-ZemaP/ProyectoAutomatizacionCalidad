@@ -1,0 +1,10 @@
+{
+  "lsp": {
+    "cucumber": {
+      "settings": {
+        "features": ["features/**/*.feature"],
+        "glue": ["features/step_definitions/**/*.rb", "features/support/**/*.rb"]
+      }
+    }
+  }
+}

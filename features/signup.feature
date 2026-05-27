@@ -15,7 +15,7 @@ Feature: Registro y validación de usuario en DemoBlaze
     And hago clic en el botón "Log in" del modal
     Then debería ver "Welcome qatest__12026" en el navbar
 
-  @regression @negative @login
+  @negative @login
   Scenario: Login con contraseña incorrecta
     When hago clic en "Log in"
     And ingreso "qatest__12026" en el campo "Username" del modal
@@ -23,7 +23,7 @@ Feature: Registro y validación de usuario en DemoBlaze
     And hago clic en el botón "Log in" del modal
     Then debería mostrar un mensaje de error
 
-  @regression @negative @signup
+  @negative @signup
   Scenario: Registro con usuario ya existente
     When hago clic en "Sign up"
     And ingreso "qatest__12026" en el campo "Username" del modal de signup
