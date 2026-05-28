@@ -67,6 +67,14 @@ Feature: Validación de login en DemoBlaze
     Then debería mostrar un mensaje de error
     And no debería haber iniciado sesión
 
+  @negative @login @validation
+  Scenario: Login con contraseña incorrecta
+    When hago clic en "Log in"
+    And ingreso "qatest__12026" en el campo "Username" del modal
+    And ingreso "WrongPassword99" en el campo "Password" del modal
+    And hago clic en el botón "Log in" del modal
+    Then debería aparecer un alert con el mensaje "Wrong password."
+
   @negative @login @validation @boundary
   Scenario: Login con valores extremadamente largos
     When hago clic en "Log in"
