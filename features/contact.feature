@@ -10,9 +10,10 @@ Feature: Formulario de contacto en DemoBlaze
   Scenario: Enviar mensaje de contacto válido
     When hago clic en "Contact"
     Then el modal de contacto debería estar visible
-    When ingreso "test@example.com" en el campo "Contact Email" del modal de contacto
-    And ingreso "Test User" en el campo "Contact Name" del modal de contacto
-    And ingreso "Este es un mensaje de prueba" en el campo "Message" del modal de contacto
+    When completo el formulario de contacto con:
+      | contact email | test@example.com |
+      | contact name | Test User |
+      | message | Este es un mensaje de prueba |
     And hago clic en "Send message" en el modal de contacto
     Then debería aparecer un alert con el mensaje "Thanks for the message!!"
 

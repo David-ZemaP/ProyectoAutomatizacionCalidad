@@ -9,17 +9,21 @@ Feature: Registro y validación de usuario en DemoBlaze
 
   @positive @signup @first_run_only
   Scenario: Registro exitoso con validación mediante login
-    When me registro con el usuario "qatest__12026" y contraseña "12026testerqa__"
+    When me registro con:
+      | username | qatest__12026 |
+      | password | 12026testerqa__ |
     And hago clic en "Log in"
-    And ingreso "qatest__12026" en el campo "Username" del modal
-    And ingreso "12026testerqa__" en el campo "Password" del modal
+    And completo el formulario de login con:
+      | username | qatest__12026 |
+      | password | 12026testerqa__ |
     And hago clic en el botón "Log in" del modal
     Then debería ver "Welcome qatest__12026" en el navbar
 
   @negative @signup @validation
   Scenario Outline: Registro inválido con datos de validación
-    When ingreso "<username>" en el campo "Username" del modal de signup
-    And ingreso "<password>" en el campo "Password" del modal de signup
+    When completo el formulario de signup con:
+      | username | <username> |
+      | password | <password> |
     And hago clic en el botón "Sign up" del modal de signup
     Then debería mostrar un mensaje de error
 
@@ -44,8 +48,9 @@ Feature: Registro y validación de usuario en DemoBlaze
 
   @negative @signup
   Scenario: Registro con usuario ya existente
-    When ingreso "qatest__12026" en el campo "Username" del modal de signup
-    And ingreso "12026testerqa__" en el campo "Password" del modal de signup
+    When completo el formulario de signup con:
+      | username | qatest__12026 |
+      | password | 12026testerqa__ |
     And hago clic en el botón "Sign up" del modal de signup
     Then debería aparecer un alert con el mensaje "This user already exist."
 

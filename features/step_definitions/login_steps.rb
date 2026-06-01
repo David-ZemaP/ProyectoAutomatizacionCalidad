@@ -1,3 +1,9 @@
+Cuando("completo el formulario de login con:") do |table|
+  within("#logInModal") do
+    form.fill_in_fields(table, DemoblazeConstants::LOGIN_FIELDS)
+  end
+end
+
 Cuando("ingreso {string} en el campo {string} del modal") do |value, field_name|
   field_id = DemoblazeConstants::LOGIN_FIELD_IDS[field_name.downcase]
   raise "Campo desconocido: #{field_name}" unless field_id

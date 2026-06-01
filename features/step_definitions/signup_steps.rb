@@ -1,5 +1,6 @@
-Cuando("me registro con el usuario {string} y contraseña {string}") do |username, password|
-  @saved_username = username
+Cuando("me registro con:") do |table|
+  credentials = table.rows_hash
+  @saved_username = credentials.fetch("username")
 
   unless page.has_css?("#signInModal.show", visible: true, wait: 1)
     find("#signin2", wait: 10).click
@@ -7,8 +8,7 @@ Cuando("me registro con el usuario {string} y contraseña {string}") do |usernam
   end
 
   within("#signInModal") do
-    find("#sign-username", wait: 5).set(username)
-    find("#sign-password", wait: 5).set(password)
+    form.fill_in_fields(table, DemoblazeConstants::SIGNUP_FIELDS)
     sleep 1
     click_button("Sign up")
   end
@@ -23,6 +23,12 @@ Cuando("me registro con el usuario {string} y contraseña {string}") do |usernam
   end
 
   expect(page).to have_no_css("#signInModal.show", visible: true, wait: 5)
+end
+
+Cuando("completo el formulario de signup con:") do |table|
+  within("#signInModal") do
+    form.fill_in_fields(table, DemoblazeConstants::SIGNUP_FIELDS)
+  end
 end
 
 Cuando("ingreso {string} en el campo {string} del modal de signup") do |value, field_name|

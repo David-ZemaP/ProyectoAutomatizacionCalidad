@@ -20,13 +20,8 @@ Cuando("realizo el pedido con:") do |table|
   click_button("Place Order")
   expect(page).to have_css("#orderModal.show", visible: true, wait: 10)
 
-  table.hashes.each do |row|
-    field_id = DemoblazeConstants::ORDER_FIELD_IDS[row["campo"].downcase]
-    raise "Campo de orden desconocido: #{row['campo']}" unless field_id
-
-    within("#orderModal") do
-      find("##{field_id}", wait: 5).set(row["valor"])
-    end
+  within("#orderModal") do
+    form.fill_in_fields(table, DemoblazeConstants::ORDER_FIELDS)
   end
 
   within("#orderModal") do

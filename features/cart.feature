@@ -27,13 +27,12 @@ Feature: Carrito de compras en DemoBlaze
     When navego al carrito
     Then el carrito debería tener productos en la lista
     When realizo el pedido con:
-      | campo       | valor          |
-      | Name        | Test User      |
-      | Country     | Uruguay        |
-      | City        | Montevideo     |
-      | Credit card | 1234567890123456 |
-      | Month       | December       |
-      | Year        | 2027           |
+      | name        | Test User       |
+      | country     | Uruguay         |
+      | city        | Montevideo      |
+      | credit card | 1234567890123456 |
+      | month       | December        |
+      | year        | 2027            |
     Then debería aparecer la confirmación de compra exitosa
 
   @positive @cart
@@ -85,8 +84,7 @@ Feature: Carrito de compras en DemoBlaze
     When navego al carrito
     Then el carrito debería tener productos en la lista
     When realizo el pedido con:
-      | campo | valor     |
-      | Name  | Test User |
+      | name | Test User |
     Then debería mostrar un mensaje de error
 
   @positive @cart
@@ -97,13 +95,12 @@ Feature: Carrito de compras en DemoBlaze
     When navego al carrito
     Then el carrito debería tener productos en la lista
     When realizo el pedido con:
-      | campo       | valor          |
-      | Name        | Test User      |
-      | Country     | Uruguay        |
-      | City        | Montevideo     |
-      | Credit card | 1234567890123456 |
-      | Month       | December       |
-      | Year        | 2027           |
+      | name        | Test User       |
+      | country     | Uruguay         |
+      | city        | Montevideo      |
+      | credit card | 1234567890123456 |
+      | month       | December        |
+      | year        | 2027            |
     Then la confirmación debería mostrar los detalles de la compra
     When cierro la confirmación de compra
     Then el carrito debería estar vacío

@@ -4,6 +4,10 @@ Dado("estoy en la página de inicio de DemoBlaze") do
   expect(page).to have_css("#navbarExample", wait: 10)
 end
 
+def form
+  @form ||= Form.new
+end
+
 Cuando("hago clic en {string}") do |link_text|
   case link_text.downcase
   when "sign up"
