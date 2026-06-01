@@ -24,16 +24,25 @@ Entonces("no debería haber iniciado sesión") do
     page.driver.browser.switch_to.alert.accept
   rescue Selenium::WebDriver::Error::NoSuchAlertError
   end
+
   expect(page).to have_no_css("#nameofuser", visible: true, wait: 5)
+  expect(page).to have_no_css("#logout2", visible: true, wait: 5)
+  expect(page).to have_css("#login2", visible: true, wait: 5)
+  expect(page).to have_css("#signin2", visible: true, wait: 5)
 end
 
 Entonces("debería ver {string} en el navbar") do |expected_text|
   expect(page).to have_css("#nameofuser", visible: true, wait: 10)
   expect(find("#nameofuser").text).to eq(expected_text)
+  expect(page).to have_css("#logout2", visible: true, wait: 10)
+  expect(page).to have_no_css("#login2", visible: true, wait: 10)
+  expect(page).to have_no_css("#signin2", visible: true, wait: 10)
 end
 
 Entonces("el modal de login debería estar visible") do
   expect(page).to have_css("#logInModal.show", visible: true, wait: 5)
+  expect(page).to have_css("#loginusername", visible: true, wait: 5)
+  expect(page).to have_css("#loginpassword", visible: true, wait: 5)
 end
 
 Cuando("cierro el modal de login con {string}") do |método|
@@ -55,4 +64,6 @@ end
 
 Entonces("el modal de login debería estar cerrado") do
   expect(page).to have_no_css("#logInModal.show", visible: true, wait: 5)
+  expect(page).to have_no_css(".modal-backdrop", visible: true, wait: 5)
+  expect(page).to have_css("#login2", visible: true, wait: 5)
 end

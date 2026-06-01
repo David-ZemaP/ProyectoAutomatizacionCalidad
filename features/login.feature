@@ -22,7 +22,7 @@ Feature: Validación de login en DemoBlaze
       | username | <username> |
       | password | <password> |
     And hago clic en el botón "Log in" del modal
-    Then debería mostrar un mensaje de error
+    Then debería aparecer un alert con el mensaje "Please fill out Username and Password."
     And no debería haber iniciado sesión
 
     Examples:
@@ -38,7 +38,8 @@ Feature: Validación de login en DemoBlaze
       | username | <username> |
       | password | password |
     And hago clic en el botón "Log in" del modal
-    Then no debería haber iniciado sesión
+    Then debería aparecer un alert con el mensaje "Wrong password."
+    And no debería haber iniciado sesión
 
     Examples:
       | username                  |
@@ -52,7 +53,7 @@ Feature: Validación de login en DemoBlaze
       | username | qatest__12026 |
       | password | <>!@#$%^&*() |
     And hago clic en el botón "Log in" del modal
-    Then debería mostrar un mensaje de error
+    Then debería aparecer un alert con el mensaje "Wrong password."
     And no debería haber iniciado sesión
 
   @negative @login @validation
@@ -62,7 +63,7 @@ Feature: Validación de login en DemoBlaze
       | username | usuario_inexistente_12345 |
       | password | password123 |
     And hago clic en el botón "Log in" del modal
-    Then debería mostrar un mensaje de error
+    Then debería aparecer un alert con el mensaje "User does not exist."
     And no debería haber iniciado sesión
 
   @negative @login @validation
@@ -73,6 +74,7 @@ Feature: Validación de login en DemoBlaze
       | password | WrongPassword99 |
     And hago clic en el botón "Log in" del modal
     Then debería aparecer un alert con el mensaje "Wrong password."
+    And no debería haber iniciado sesión
 
   @negative @login @validation @boundary
   Scenario: Login con valores extremadamente largos
@@ -81,7 +83,8 @@ Feature: Validación de login en DemoBlaze
       | username | aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffgggggggggghhhhhhhhhhiiiiiiiiiijjjjjjjjjjkkkkkkkkkkllllllllllmmmmmmmmmmnnnnnnnnnnooooooooooppppppppppqqqqqqqqqqrrrrrrrrrrssssssssssttttttttttuuuuuuuuuuvvvvvvvvvvwwwwwwwwwwxxxxxxxxxxyyyyyyyyyyzzzzzzzzzz |
       | password | password |
     And hago clic en el botón "Log in" del modal
-    Then no debería haber iniciado sesión
+    Then debería aparecer un alert con el mensaje "Wrong password."
+    And no debería haber iniciado sesión
 
   @negative @login @ui
   Scenario Outline: Cerrar modal de login con <método>
