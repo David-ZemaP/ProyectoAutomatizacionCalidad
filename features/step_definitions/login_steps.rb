@@ -1,11 +1,5 @@
-
-LOGIN_FIELD_IDS = {
-  "username" => "loginusername",
-  "password" => "loginpassword"
-}.freeze
-
 Cuando("ingreso {string} en el campo {string} del modal") do |value, field_name|
-  field_id = LOGIN_FIELD_IDS[field_name.downcase]
+  field_id = DemoblazeConstants::LOGIN_FIELD_IDS[field_name.downcase]
   raise "Campo desconocido: #{field_name}" unless field_id
 
   within("#logInModal") do

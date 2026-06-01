@@ -16,11 +16,28 @@ Proyecto de pruebas automatizadas para el sitio [DemoBlaze](https://www.demoblaz
 
 ```
 features/
-├── signup.feature              # Escenarios de registro y login
+├── cart.feature                # Escenarios de carrito y compra
+├── categories.feature          # Escenarios de filtrado por categorías
+├── contact.feature             # Escenarios de formulario de contacto
+├── login.feature               # Escenarios de inicio de sesión
+├── logout.feature              # Escenarios de cierre de sesión
+├── navigation.feature          # Escenarios de navegación principal
+├── product_details.feature     # Escenarios de detalle de producto
+├── signup.feature              # Escenarios de registro
 ├── step_definitions/
-│   └── signup_steps.rb         # Steps en Ruby
+│   ├── cart_steps.rb
+│   ├── categories_steps.rb
+│   ├── common_steps.rb
+│   ├── contact_steps.rb
+│   ├── login_steps.rb
+│   ├── logout_steps.rb
+│   ├── navigation_steps.rb
+│   ├── product_steps.rb
+│   └── signup_steps.rb
 └── support/
-    └── env.rb                  # Configuración de Capybara + hooks
+  ├── constants.rb            # Constantes compartidas (mapeos de campos)
+  ├── env.rb                  # Configuración de Capybara
+  └── hooks.rb                # Hooks de Cucumber
 reports/                        # Reports HTML generados (gitignored)
 .run_once/                      # Marcadores de ejecución única (gitignored)
 .gitignore

@@ -1,9 +1,3 @@
-
-SIGNUP_FIELD_IDS = {
-  "username" => "sign-username",
-  "password" => "sign-password"
-}.freeze
-
 Cuando("me registro con el usuario {string} y contraseña {string}") do |username, password|
   @saved_username = username
 
@@ -32,7 +26,7 @@ Cuando("me registro con el usuario {string} y contraseña {string}") do |usernam
 end
 
 Cuando("ingreso {string} en el campo {string} del modal de signup") do |value, field_name|
-  field_id = SIGNUP_FIELD_IDS[field_name.downcase]
+  field_id = DemoblazeConstants::SIGNUP_FIELD_IDS[field_name.downcase]
   raise "Campo desconocido: #{field_name}" unless field_id
 
   within("#signInModal") do

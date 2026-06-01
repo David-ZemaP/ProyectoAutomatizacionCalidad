@@ -1,15 +1,9 @@
-CONTACT_FIELD_IDS = {
-  "contact email" => "recipient-email",
-  "contact name" => "recipient-name",
-  "message" => "message-text"
-}.freeze
-
 Entonces("el modal de contacto debería estar visible") do
   expect(page).to have_css("#exampleModal.show", visible: true, wait: 10)
 end
 
 Cuando("ingreso {string} en el campo {string} del modal de contacto") do |value, field_name|
-  field_id = CONTACT_FIELD_IDS[field_name.downcase]
+  field_id = DemoblazeConstants::CONTACT_FIELD_IDS[field_name.downcase]
   raise "Campo de contacto desconocido: #{field_name}" unless field_id
 
   within("#exampleModal") do

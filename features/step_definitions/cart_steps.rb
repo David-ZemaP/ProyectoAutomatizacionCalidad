@@ -1,12 +1,3 @@
-ORDER_FIELD_IDS = {
-  "name" => "name",
-  "country" => "country",
-  "city" => "city",
-  "credit card" => "card",
-  "month" => "month",
-  "year" => "year"
-}.freeze
-
 Cuando("navego al carrito") do
   el = find("#cartur", wait: 10)
   page.execute_script("arguments[0].click()", el)
@@ -30,7 +21,7 @@ Cuando("realizo el pedido con:") do |table|
   expect(page).to have_css("#orderModal.show", visible: true, wait: 10)
 
   table.hashes.each do |row|
-    field_id = ORDER_FIELD_IDS[row["campo"].downcase]
+    field_id = DemoblazeConstants::ORDER_FIELD_IDS[row["campo"].downcase]
     raise "Campo de orden desconocido: #{row['campo']}" unless field_id
 
     within("#orderModal") do
