@@ -74,7 +74,7 @@ Feature: Carrito de compras en DemoBlaze
   Scenario: Place Order con campos vacíos
     When navego al carrito
     When realizo el pedido vacío
-    Then debería mostrar un mensaje de error
+    Then debería aparecer un alert con el mensaje "Please fill out Name and Creditcard."
 
   @negative @cart @validation
   Scenario: Place Order con solo nombre sin tarjeta
@@ -85,7 +85,7 @@ Feature: Carrito de compras en DemoBlaze
     Then el carrito debería tener productos en la lista
     When realizo el pedido con:
       | name | Test User |
-    Then debería mostrar un mensaje de error
+    Then debería aparecer un alert con el mensaje "Please fill out Name and Creditcard."
 
   @positive @cart
   Scenario: Verificar detalles de confirmación de compra
