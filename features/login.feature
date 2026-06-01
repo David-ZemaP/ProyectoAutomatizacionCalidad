@@ -6,50 +6,43 @@ Feature: Validación de login en DemoBlaze
   Background:
     Given estoy en la página de inicio de DemoBlaze
 
-  @negative @login @validation @empty
-  Scenario: Login con username vacío
+  @smoke @positive @login
+  Scenario: Login exitoso con credenciales válidas
     When hago clic en "Log in"
-    And ingreso "" en el campo "Username" del modal
-    And ingreso "somepassword" en el campo "Password" del modal
+    And ingreso "qatest__12026" en el campo "Username" del modal
+    And ingreso "12026testerqa__" en el campo "Password" del modal
+    And hago clic en el botón "Log in" del modal
+    Then debería ver "Welcome qatest__12026" en el navbar
+
+  @negative @login @validation @empty
+  Scenario Outline: Login con campos vacíos
+    When hago clic en "Log in"
+    And ingreso "<username>" en el campo "Username" del modal
+    And ingreso "<password>" en el campo "Password" del modal
     And hago clic en el botón "Log in" del modal
     Then debería mostrar un mensaje de error
     And no debería haber iniciado sesión
 
-  @negative @login @validation @empty
-  Scenario: Login con password vacío
-    When hago clic en "Log in"
-    And ingreso "someuser" en el campo "Username" del modal
-    And ingreso "" en el campo "Password" del modal
-    And hago clic en el botón "Log in" del modal
-    Then debería mostrar un mensaje de error
-    And no debería haber iniciado sesión
-
-  @negative @login @validation @empty
-  Scenario: Login con ambos campos vacíos
-    When hago clic en "Log in"
-    And ingreso "" en el campo "Username" del modal
-    And ingreso "" en el campo "Password" del modal
-    And hago clic en el botón "Log in" del modal
-    Then debería mostrar un mensaje de error
-    And no debería haber iniciado sesión
+    Examples:
+      | username     | password     |
+      |              | somepassword |
+      | someuser     |              |
+      |              |              |
 
   @negative @login @validation @injection
-  Scenario: Login con caracteres especiales tipo SQL injection en username
+  Scenario Outline: Login con inyección en username
     When hago clic en "Log in"
-    And ingreso "' OR 1=1 --" en el campo "Username" del modal
+    And ingreso "<username>" en el campo "Username" del modal
     And ingreso "password" en el campo "Password" del modal
     And hago clic en el botón "Log in" del modal
     Then no debería haber iniciado sesión
 
-  @negative @login @validation @injection
-  Scenario: Login con intento de XSS en username
-    When hago clic en "Log in"
-    And ingreso "<script>alert(1)</script>" en el campo "Username" del modal
-    And ingreso "password" en el campo "Password" del modal
-    And hago clic en el botón "Log in" del modal
-    Then no debería haber iniciado sesión
+    Examples:
+      | username                  |
+      | ' OR 1=1 --               |
+      | <script>alert(1)</script> |
 
-  @negative @login @validation @injection
+  @negative @login @validation
   Scenario: Login con caracteres especiales en password
     When hago clic en "Log in"
     And ingreso "qatest__12026" en el campo "Username" del modal
@@ -82,3 +75,15 @@ Feature: Validación de login en DemoBlaze
     And ingreso "password" en el campo "Password" del modal
     And hago clic en el botón "Log in" del modal
     Then no debería haber iniciado sesión
+
+  @negative @login @ui
+  Scenario Outline: Cerrar modal de login con <método>
+    When hago clic en "Log in"
+    Then el modal de login debería estar visible
+    When cierro el modal de login con "<método>"
+    Then el modal de login debería estar cerrado
+
+    Examples:
+      | método |
+      | Close  |
+      | X      |
