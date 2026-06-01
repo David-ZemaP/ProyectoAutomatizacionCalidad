@@ -14,7 +14,10 @@ Cuando("me registro con:") do |table|
   end
 
   sleep 2
-  page.driver.browser.switch_to.alert.accept
+
+  alert = wait_for_alert
+  expect(alert.text).to eq("Sign up successful.")
+  alert.accept
 
   if page.has_css?("#signInModal.show", visible: true, wait: 3)
     within("#signInModal") do
@@ -48,6 +51,14 @@ end
 
 Entonces("el modal de signup debería estar visible") do
   expect(page).to have_css("#signInModal.show", visible: true, wait: 5)
+
+  within("#signInModal") do
+    expect(page).to have_css(".modal-title", text: "Sign up", wait: 5)
+    expect(page).to have_css("#sign-username", visible: true, wait: 5)
+    expect(page).to have_css("#sign-password", visible: true, wait: 5)
+    expect(page).to have_button("Sign up", wait: 5)
+    expect(page).to have_button("Close", wait: 5)
+  end
 end
 
 Cuando("cierro el modal de signup con {string}") do |método|
@@ -63,10 +74,13 @@ Cuando("cierro el modal de signup con {string}") do |método|
   else
     raise "Método de cierre desconocido: #{método}"
   end
+
   sleep 0.5
   page.execute_script("$('#signInModal').modal('hide')")
 end
 
 Entonces("el modal de signup debería estar cerrado") do
   expect(page).to have_no_css("#signInModal.show", visible: true, wait: 5)
+  expect(page).to have_no_css(".modal-backdrop", visible: true, wait: 5)
+  expect(page).to have_css("#signin2", visible: true, wait: 5)
 end
