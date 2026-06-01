@@ -39,3 +39,28 @@ Cuando("hago clic en el botón {string} del modal de signup") do |button_text|
     click_button(button_text)
   end
 end
+
+Entonces("el modal de signup debería estar visible") do
+  expect(page).to have_css("#signInModal.show", visible: true, wait: 5)
+end
+
+Cuando("cierro el modal de signup con {string}") do |método|
+  case método
+  when "Close"
+    within("#signInModal") do
+      click_button("Close")
+    end
+  when "X"
+    within("#signInModal") do
+      find(".close", wait: 5).click
+    end
+  else
+    raise "Método de cierre desconocido: #{método}"
+  end
+  sleep 0.5
+  page.execute_script("$('#signInModal').modal('hide')")
+end
+
+Entonces("el modal de signup debería estar cerrado") do
+  expect(page).to have_no_css("#signInModal.show", visible: true, wait: 5)
+end

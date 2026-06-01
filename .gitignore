@@ -5,3 +5,4 @@ screenshot_*.png
 vendor/
 .bundle/
 *.log
+.zed

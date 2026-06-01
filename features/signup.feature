@@ -7,7 +7,7 @@ Feature: Registro y validación de usuario en DemoBlaze
     Given estoy en la página de inicio de DemoBlaze
     And hago clic en "Sign up"
 
-  @smoke @positive @signup @first_run_only
+  @positive @signup @first_run_only
   Scenario: Registro exitoso con validación mediante login
     When me registro con el usuario "qatest__12026" y contraseña "12026testerqa__"
     And hago clic en "Log in"
@@ -48,3 +48,14 @@ Feature: Registro y validación de usuario en DemoBlaze
     And ingreso "12026testerqa__" en el campo "Password" del modal de signup
     And hago clic en el botón "Sign up" del modal de signup
     Then debería aparecer un alert con el mensaje "This user already exist."
+
+  @negative @signup @ui
+  Scenario Outline: Cerrar modal de signup con <método>
+    Then el modal de signup debería estar visible
+    When cierro el modal de signup con "<método>"
+    Then el modal de signup debería estar cerrado
+
+    Examples:
+      | método |
+      | Close  |
+      | X      |
