@@ -30,3 +30,19 @@ end
 Before("@smoke") do
   visit "/" unless page.has_css?("#navbarExample", wait: 3)
 end
+
+RUN_ONCE_DIR = File.join(__dir__, "..", ".run_once")
+
+Before("@first_run_only") do |scenario|
+  marker = File.join(RUN_ONCE_DIR, scenario.name.gsub(/\s+/, "_").gsub(/[^\w]/, "").downcase + ".marker")
+  @run_once_marker = marker
+
+  if File.exist?(marker)
+    skip_this_scenario("Ya se ejecutó: #{scenario.name}")
+  end
+end
+
+After("@first_run_only") do
+  FileUtils.mkdir_p(RUN_ONCE_DIR)
+  File.write(@run_once_marker, "Ejecutado el: #{Time.now}")
+end
