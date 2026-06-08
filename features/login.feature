@@ -4,26 +4,18 @@ Feature: Validación de login en DemoBlaze
   Para asegurar la robustez del formulario de inicio de sesión
 
   Background:
-    Given estoy en la página de inicio de DemoBlaze
+    Given que me encuentro en la página de inicio de DemoBlaze
 
   @smoke @positive @login
   Scenario: Login exitoso con credenciales válidas
-    When hago clic en "Log in"
-    And completo el formulario de login con:
-      | username | qatest__12026 |
-      | password | 12026testerqa__ |
-    And hago clic en el botón "Log in" del modal
-    Then debería ver "Welcome qatest__12026" en el navbar
+    When inicio sesión con el usuario "qatest__12026" y la contraseña "12026testerqa__"
+    Then debería ver el saludo de bienvenida para el usuario "qatest__12026"
 
   @negative @login @validation @empty
   Scenario Outline: Login con campos vacíos
-    When hago clic en "Log in"
-    And completo el formulario de login con:
-      | username | <username> |
-      | password | <password> |
-    And hago clic en el botón "Log in" del modal
-    Then debería aparecer un alert con el mensaje "Please fill out Username and Password."
-    And no debería haber iniciado sesión
+    When inicio sesión con el usuario "<username>" y la contraseña "<password>"
+    Then debería ver el mensaje de alerta "Please fill out Username and Password."
+    And no debería ingresar a la cuenta
 
     Examples:
       | username     | password     |
@@ -33,13 +25,9 @@ Feature: Validación de login en DemoBlaze
 
   @negative @login @validation @injection
   Scenario Outline: Login con inyección en username
-    When hago clic en "Log in"
-    And completo el formulario de login con:
-      | username | <username> |
-      | password | password |
-    And hago clic en el botón "Log in" del modal
-    Then debería aparecer un alert con el mensaje "Wrong password."
-    And no debería haber iniciado sesión
+    When inicio sesión con el usuario "<username>" y la contraseña "password"
+    Then debería ver el mensaje de alerta "Wrong password."
+    And no debería ingresar a la cuenta
 
     Examples:
       | username                  |
@@ -48,50 +36,33 @@ Feature: Validación de login en DemoBlaze
 
   @negative @login @validation
   Scenario: Login con caracteres especiales en password
-    When hago clic en "Log in"
-    And completo el formulario de login con:
-      | username | qatest__12026 |
-      | password | <>!@#$%^&*() |
-    And hago clic en el botón "Log in" del modal
-    Then debería aparecer un alert con el mensaje "Wrong password."
-    And no debería haber iniciado sesión
+    When inicio sesión con el usuario "qatest__12026" y la contraseña "<>!@#$%^&*()"
+    Then debería ver el mensaje de alerta "Wrong password."
+    And no debería ingresar a la cuenta
 
   @negative @login @validation
   Scenario: Login con usuario que no existe
-    When hago clic en "Log in"
-    And completo el formulario de login con:
-      | username | usuario_inexistente_12345 |
-      | password | password123 |
-    And hago clic en el botón "Log in" del modal
-    Then debería aparecer un alert con el mensaje "User does not exist."
-    And no debería haber iniciado sesión
+    When inicio sesión con el usuario "usuario_inexistente_12345" y la contraseña "password123"
+    Then debería ver el mensaje de alerta "User does not exist."
+    And no debería ingresar a la cuenta
 
   @negative @login @validation
   Scenario: Login con contraseña incorrecta
-    When hago clic en "Log in"
-    And completo el formulario de login con:
-      | username | qatest__12026 |
-      | password | WrongPassword99 |
-    And hago clic en el botón "Log in" del modal
-    Then debería aparecer un alert con el mensaje "Wrong password."
-    And no debería haber iniciado sesión
+    When inicio sesión con el usuario "qatest__12026" y la contraseña "WrongPassword99"
+    Then debería ver el mensaje de alerta "Wrong password."
+    And no debería ingresar a la cuenta
 
   @negative @login @validation @boundary
   Scenario: Login con valores extremadamente largos
-    When hago clic en "Log in"
-    And completo el formulario de login con:
-      | username | aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffgggggggggghhhhhhhhhhiiiiiiiiiijjjjjjjjjjkkkkkkkkkkllllllllllmmmmmmmmmmnnnnnnnnnnooooooooooppppppppppqqqqqqqqqqrrrrrrrrrrssssssssssttttttttttuuuuuuuuuuvvvvvvvvvvwwwwwwwwwwxxxxxxxxxxyyyyyyyyyyzzzzzzzzzz |
-      | password | password |
-    And hago clic en el botón "Log in" del modal
-    Then debería aparecer un alert con el mensaje "Wrong password."
-    And no debería haber iniciado sesión
+    When inicio sesión con el usuario "aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffgggggggggghhhhhhhhhhiiiiiiiiiijjjjjjjjjjkkkkkkkkkkllllllllllmmmmmmmmmmnnnnnnnnnnooooooooooppppppppppqqqqqqqqqqrrrrrrrrrrssssssssssttttttttttuuuuuuuuuuvvvvvvvvvvwwwwwwwwwwxxxxxxxxxxyyyyyyyyyyzzzzzzzzzz" y la contraseña "password"
+    Then debería ver el mensaje de alerta "Wrong password."
+    And no debería ingresar a la cuenta
 
   @negative @login @ui
-  Scenario Outline: Cerrar modal de login con <método>
-    When hago clic en "Log in"
-    Then el modal de login debería estar visible
-    When cierro el modal de login con "<método>"
-    Then el modal de login debería estar cerrado
+  Scenario Outline: Cerrar formulario de login con <método>
+    When abro el formulario de inicio de sesión
+    And cierro el formulario usando el método "<método>"
+    Then el formulario de inicio de sesión debería cerrarse
 
     Examples:
       | método |

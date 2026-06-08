@@ -4,14 +4,10 @@ Feature: Cierre de sesión en DemoBlaze
   Para asegurarme de que mi sesión termina correctamente
 
   Background:
-    Given estoy en la página de inicio de DemoBlaze
+    Given que me encuentro en la página de inicio de DemoBlaze
 
   @positive @logout @smoke
   Scenario: Logout exitoso después de login exitoso
-    When hago clic en "Log in"
-    And ingreso "qatest__12026" en el campo "Username" del modal
-    And ingreso "12026testerqa__" en el campo "Password" del modal
-    And hago clic en el botón "Log in" del modal
-    Then debería ver "Welcome qatest__12026" en el navbar
-    When cierro sesión
-    Then debería estar deslogueado
+    Given que he iniciado sesión con el usuario "qatest__12026" y la contraseña "12026testerqa__"
+    When cierro mi sesión de usuario
+    Then debería quedar desconectado de mi cuenta

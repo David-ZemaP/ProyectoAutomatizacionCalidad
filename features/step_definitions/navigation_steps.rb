@@ -41,7 +41,18 @@ def expect_cart_page_loaded
   expect(page).to have_css("#totalp", visible: :all, wait: 10)
 end
 
-Entonces("la navegación debería mostrar {string}") do |resultado|
+Cuando("accedo a la sección {string} desde el menú de navegación") do |link_text|
+  case link_text.downcase
+  when "sign up"
+    find("#signin2", wait: 10).click
+  when "log in"
+    find("#login2", wait: 10).click
+  else
+    click_link(link_text, match: :first)
+  end
+end
+
+Entonces("la aplicación debería mostrar la sección {string}") do |resultado|
   case resultado
   when "principal"
     expect_home_page_loaded
@@ -56,11 +67,12 @@ Entonces("la navegación debería mostrar {string}") do |resultado|
   end
 end
 
-Entonces("el modal About us debería estar visible") do
+Cuando("abro la sección informativa Acerca de nosotros") do
+  click_link("About us", match: :first)
   expect_about_modal_loaded
 end
 
-Cuando("cierro el modal About us con {string}") do |metodo|
+Cuando("cierro la ventana informativa usando el método {string}") do |metodo|
   within("#videoModal") do
     case metodo.downcase
     when "close"
@@ -68,14 +80,14 @@ Cuando("cierro el modal About us con {string}") do |metodo|
     when "x"
       find(".close", wait: 5).click
     else
-      raise "Metodo de cierre desconocido: #{metodo}"
+      raise "Método de cierre desconocido: #{metodo}"
     end
   end
   sleep 0.5
-  page.execute_script("$('#videoModal').modal('hide')")
+  page.execute_script("$('#videoModal').modal('hide')") rescue nil
 end
 
-Entonces("el modal About us debería estar cerrado") do
+Entonces("la ventana informativa Acerca de nosotros debería cerrarse") do
   expect(page).to have_no_css("#videoModal.show", visible: true, wait: 5)
   expect(page).to have_no_css(".modal-backdrop", visible: true, wait: 5)
   expect(page).to have_css("#navbarExample", visible: true, wait: 5)

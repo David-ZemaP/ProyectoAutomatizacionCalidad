@@ -1,22 +1,13 @@
-
-Dado("estoy en la página de inicio de DemoBlaze") do
-  visit "/"
-  expect(page).to have_css("#navbarExample", wait: 10)
-end
+require 'capybara/dsl'
+require 'rspec/expectations'
 
 def form
   @form ||= Form.new
 end
 
-Cuando("hago clic en {string}") do |link_text|
-  case link_text.downcase
-  when "sign up"
-    find("#signin2", wait: 10).click
-  when "log in"
-    find("#login2", wait: 10).click
-  else
-    click_link(link_text, match: :first)
-  end
+Dado("que me encuentro en la página de inicio de DemoBlaze") do
+  visit "/"
+  expect(page).to have_css("#navbarExample", wait: 10)
 end
 
 def wait_for_alert(timeout: 5)
@@ -31,15 +22,15 @@ def wait_for_alert(timeout: 5)
   end
 end
 
+Entonces("debería ver el mensaje de alerta {string}") do |expected_message|
+  alert = wait_for_alert
+  expect(alert.text).to eq(expected_message)
+  alert.accept
+end
+
 Entonces("debería mostrar un mensaje de error") do
   expect do
     alert = wait_for_alert
     alert.accept
   end.not_to raise_error
-end
-
-Entonces("debería aparecer un alert con el mensaje {string}") do |expected_message|
-  alert = wait_for_alert
-  expect(alert.text).to eq(expected_message)
-  alert.accept
 end

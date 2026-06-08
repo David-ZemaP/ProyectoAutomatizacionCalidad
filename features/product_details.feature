@@ -4,59 +4,49 @@ Feature: Detalles de producto en DemoBlaze
   Para revisar la información antes de agregarlo al carrito
 
   Background:
-    Given estoy en la página de inicio de DemoBlaze
+    Given que me encuentro en la página de inicio de DemoBlaze
 
   @positive @products @details @smoke
-  Scenario: Los productos se listan correctamente en la página principal
-    Then debería haber productos visibles en la página
-    And cada producto debería tener nombre y precio visible
+  Scenario: Los productos se listan correctamente en el catálogo principal
+    Then debería ver productos disponibles en el catálogo
+    And cada producto listado debería mostrar su respectivo nombre y precio
 
   @positive @products @details
-  Scenario: Navegar a la página de detalles al hacer clic en un producto
-    When hago clic en el primer producto de la lista
-    Then debería estar en la página de detalles del producto
-    And la página debería mostrar los datos del producto:
-      | campo       |
-      | nombre      |
-      | precio      |
-      | descripción |
-      | imagen      |
-      | Add to cart |
+  Scenario: Navegar a los detalles de un producto al seleccionarlo
+    When selecciono el producto "Samsung galaxy s6"
+    Then debería ver la página de detalles del producto
+    And los detalles deberían incluir nombre, precio, descripción e imagen del producto
 
   @positive @products @details @navigation
-  Scenario: Volver a la página principal desde la página de producto
-    When hago clic en el primer producto de la lista
-    Then debería estar en la página de detalles del producto
-    When vuelvo a la página de inicio
-    Then debería estar en la página principal
-    And debería haber productos visibles en la página
+  Scenario: Regresar al catálogo principal desde el detalle del producto
+    Given que estoy visualizando los detalles del producto "Samsung galaxy s6"
+    When regreso al catálogo principal
+    Then debería ver el catálogo de productos disponible nuevamente
 
   @positive @products @details @add_to_cart
-  Scenario: Agregar producto al carrito desde la página de detalles
-    When hago clic en el primer producto de la lista
-    And hago clic en "Add to cart"
-    Then debería aparecer un alert con el mensaje "Product added"
+  Scenario: Agregar un producto al carrito desde su página de detalle
+    Given que estoy visualizando los detalles del producto "Samsung galaxy s6"
+    When agrego el producto al carrito de compras
+    Then la tienda debería confirmar la adición del producto
 
   @positive @products @navigation
-  Scenario: Navegar entre páginas de productos
-    Then debería haber productos visibles en la página
-    When hago clic en "Next" de la paginación
-    Then debería haber productos visibles en la página
-    When hago clic en "Previous" de la paginación
-    Then debería haber productos visibles en la página
+  Scenario: Navegar entre las páginas del catálogo
+    When avanzo a la siguiente página del catálogo de productos
+    Then debería ver nuevos productos listados en la página
+    When retrocedo a la página anterior del catálogo
+    Then debería ver los productos iniciales listados en la página
 
   @positive @products @details
-  Scenario: El precio del producto sigue el formato esperado
-    When hago clic en el primer producto de la lista
-    Then el precio debería comenzar con "$" y contener solo dígitos
+  Scenario: El precio del producto en detalle tiene formato en dólares
+    When selecciono el producto "Samsung galaxy s6"
+    Then el precio del producto debería comenzar con el símbolo "$" y contener solo dígitos numéricos
 
   @positive @products @details
-  Scenario: El nombre del producto en la lista coincide con la página de detalles
-    When recuerdo el nombre del primer producto en la lista
-    And hago clic en el primer producto de la lista
-    Then el nombre del producto en detalle debería coincidir
+  Scenario: El nombre del producto seleccionado coincide con su detalle
+    When selecciono el producto "Samsung galaxy s6"
+    Then el nombre visible en la página de detalles debería ser "Samsung galaxy s6"
 
   @positive @products @details
-  Scenario: Cada producto tiene una imagen visible en la página principal
-    Then debería haber productos visibles en la página
-    And cada producto debería tener una imagen visible
+  Scenario: Cada producto muestra una imagen descriptiva en el catálogo principal
+    Then debería ver productos disponibles en el catálogo
+    And cada producto listado debería contar con una imagen visible

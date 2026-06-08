@@ -4,28 +4,18 @@ Feature: Registro y validación de usuario en DemoBlaze
   Para asegurar la robustez del formulario de creación de cuenta
 
   Background:
-    Given estoy en la página de inicio de DemoBlaze
-    And hago clic en "Sign up"
+    Given que me encuentro en la página de inicio de DemoBlaze
 
   @positive @signup @first_run_only
   Scenario: Registro exitoso con validación mediante login
-    When me registro con:
-      | username | qatest__12026 |
-      | password | 12026testerqa__ |
-    And hago clic en "Log in"
-    And completo el formulario de login con:
-      | username | qatest__12026 |
-      | password | 12026testerqa__ |
-    And hago clic en el botón "Log in" del modal
-    Then debería ver "Welcome qatest__12026" en el navbar
+    When me registro con el nuevo usuario "qatest__12026" y la contraseña "12026testerqa__"
+    And inicio sesión con el usuario "qatest__12026" y la contraseña "12026testerqa__"
+    Then debería ver el saludo de bienvenida para el usuario "qatest__12026"
 
   @negative @signup @validation
   Scenario Outline: Registro inválido con datos de validación
-    When completo el formulario de signup con:
-      | username | <username> |
-      | password | <password> |
-    And hago clic en el botón "Sign up" del modal de signup
-    Then debería mostrar un mensaje de error
+    When intento registrarme con el usuario "<username>" y la contraseña "<password>"
+    Then debería ver una advertencia de error de registro
 
     @empty
     Examples: Campos vacíos
@@ -48,17 +38,14 @@ Feature: Registro y validación de usuario en DemoBlaze
 
   @negative @signup
   Scenario: Registro con usuario ya existente
-    When completo el formulario de signup con:
-      | username | qatest__12026 |
-      | password | 12026testerqa__ |
-    And hago clic en el botón "Sign up" del modal de signup
-    Then debería aparecer un alert con el mensaje "This user already exist."
+    When intento registrarme con el usuario existente "qatest__12026" y la contraseña "12026testerqa__"
+    Then debería ver el mensaje de alerta "This user already exist."
 
   @negative @signup @ui
-  Scenario Outline: Cerrar modal de signup con <método>
-    Then el modal de signup debería estar visible
-    When cierro el modal de signup con "<método>"
-    Then el modal de signup debería estar cerrado
+  Scenario Outline: Cerrar formulario de registro con <método>
+    When abro el formulario de registro
+    And cierro el formulario de registro usando el método "<método>"
+    Then el formulario de registro debería cerrarse
 
     Examples:
       | método |

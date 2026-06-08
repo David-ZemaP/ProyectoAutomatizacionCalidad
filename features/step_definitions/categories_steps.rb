@@ -25,30 +25,36 @@ def products_for_category(category)
   JSON.parse(response.body).fetch('Items', []).map { |item| item.fetch('title').to_s.strip }
 end
 
-Cuando("selecciono la categoría {string}") do |category|
+Cuando("selecciono la categoría {string} para filtrar") do |category|
   @before_filter_count = all("#tbodyid .card", visible: true, wait: 10).size
   @expected_filter_titles = products_for_category(category)
   find("a.list-group-item", text: category).click
   sleep 1
 end
 
-Entonces("deberían mostrarse exactamente los mismos productos que retorna la API") do
-  card_titles = visible_catalog_product_names
+Dado("que he seleccionado la categoría {string} para filtrar") do |category|
+  @before_filter_count = all("#tbodyid .card", visible: true, wait: 10).size
+  @expected_filter_titles = products_for_category(category)
+  find("a.list-group-item", text: category).click
+  sleep 1
+end
 
+Entonces("debería ver la lista de productos correspondiente a la categoría {string}") do |category|
+  card_titles = visible_catalog_product_names
   expect(card_titles).to match_array(@expected_filter_titles)
 end
 
-Entonces("deberían aparecer todos los productos nuevamente") do
+Cuando("regreso a la página de inicio") do
+  find(".navbar-brand", wait: 10).click
+  sleep 1
+end
+
+Entonces("debería ver la lista completa de todos los productos disponibles") do
   cards = all("#tbodyid .card", visible: true, wait: 10)
   expect(cards.size).to eq(@before_filter_count)
 end
 
-Entonces("debería ver las categorías {string}, {string} y {string}") do |cat1, cat2, cat3|
+Entonces("el menú lateral de categorías debería mostrar {string}, {string} y {string}") do |cat1, cat2, cat3|
   categories_text = all("a.list-group-item", wait: 5).map(&:text)
   expect(categories_text).to include(cat1, cat2, cat3)
-end
-
-Entonces("debería haber productos visibles después del filtro") do
-  cards = all("#tbodyid .card", visible: true, wait: 10)
-  expect(cards.size).to be > 0
 end

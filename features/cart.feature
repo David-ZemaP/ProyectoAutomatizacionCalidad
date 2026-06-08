@@ -4,103 +4,71 @@ Feature: Carrito de compras en DemoBlaze
   Para agregar productos y realizar una compra
 
   Background:
-    Given estoy en la página de inicio de DemoBlaze
+    Given que me encuentro en la página de inicio de DemoBlaze
 
   @positive @cart
   Scenario: El carrito está vacío inicialmente
-    When navego al carrito
-    Then el carrito debería estar vacío
+    When accedo a mi carrito de compras
+    Then el carrito de compras debería estar vacío
 
   @positive @cart
   Scenario: Agregar un producto al carrito y verlo en la lista
-    When hago clic en el primer producto de la lista
-    And hago clic en "Add to cart"
-    Then debería aparecer un alert con el mensaje "Product added"
-    When navego al carrito
-    Then el carrito debería tener productos en la lista
+    When selecciono el producto "Samsung galaxy s6"
+    And agrego el producto seleccionado al carrito
+    And accedo a mi carrito de compras
+    Then el producto "Samsung galaxy s6" debería figurar en mi carrito de compras
 
   @positive @cart @smoke
-  Scenario: Place Order exitoso
-    When hago clic en el primer producto de la lista
-    And hago clic en "Add to cart"
-    Then debería aparecer un alert con el mensaje "Product added"
-    When navego al carrito
-    Then el carrito debería tener productos en la lista
-    When realizo el pedido con:
-      | name        | Test User       |
-      | country     | Uruguay         |
-      | city        | Montevideo      |
+  Scenario: Realizar una compra exitosa
+    Given que tengo el producto "Samsung galaxy s6" en mi carrito de compras
+    When realizo la compra con los siguientes datos del comprador:
+      | name        | Test User        |
+      | country     | Uruguay          |
+      | city        | Montevideo       |
       | credit card | 1234567890123456 |
-      | month       | December        |
-      | year        | 2027            |
-    Then debería aparecer la confirmación de compra exitosa
+      | month       | December         |
+      | year        | 2027             |
+    Then la compra debería ser confirmada exitosamente
 
   @positive @cart
-  Scenario: Eliminar producto del carrito
-    When hago clic en el primer producto de la lista
-    And hago clic en "Add to cart"
-    Then debería aparecer un alert con el mensaje "Product added"
-    When navego al carrito
-    Then el carrito debería tener productos en la lista
-    When elimino el producto del carrito
-    Then el carrito debería estar vacío
+  Scenario: Eliminar un producto del carrito
+    Given que tengo el producto "Samsung galaxy s6" en mi carrito de compras
+    When elimino el producto "Samsung galaxy s6" de la lista de compras
+    Then el carrito de compras debería estar vacío
 
   @positive @cart
   Scenario: Total del carrito con múltiples productos
-    When hago clic en el primer producto de la lista
-    And hago clic en "Add to cart"
-    Then debería aparecer un alert con el mensaje "Product added"
-    When vuelvo a la página de inicio
-    And hago clic en el segundo producto de la lista
-    And hago clic en "Add to cart"
-    Then debería aparecer un alert con el mensaje "Product added"
-    When navego al carrito
-    Then el carrito debería tener productos en la lista
-    And el total debería ser la suma de los productos
+    Given que he agregado los productos "Samsung galaxy s6" y "Nokia lumia 1520" al carrito
+    When accedo a mi carrito de compras
+    Then el precio total debería reflejar la suma de los precios de los productos seleccionados
 
   @positive @cart
   Scenario: Agregar el mismo producto dos veces al carrito
-    When hago clic en el primer producto de la lista
-    And hago clic en "Add to cart"
-    Then debería aparecer un alert con el mensaje "Product added"
-    When vuelvo a la página de inicio
-    And hago clic en el primer producto de la lista
-    And hago clic en "Add to cart"
-    Then debería aparecer un alert con el mensaje "Product added"
-    When navego al carrito
-    Then el carrito debería tener 2 productos en la lista
+    Given que he agregado el producto "Samsung galaxy s6" al carrito dos veces
+    When accedo a mi carrito de compras
+    Then el carrito de compras debería contener 2 productos
 
   @negative @cart @validation
-  Scenario: Place Order con campos vacíos
-    When navego al carrito
-    When realizo el pedido vacío
-    Then debería aparecer un alert con el mensaje "Please fill out Name and Creditcard."
+  Scenario: Intentar realizar compra con campos obligatorios vacíos
+    Given que tengo el producto "Samsung galaxy s6" en mi carrito de compras
+    When intento realizar la compra dejando vacíos los campos obligatorios
+    Then debería ver la advertencia de compra "Please fill out Name and Creditcard."
 
   @negative @cart @validation
-  Scenario: Place Order con solo nombre sin tarjeta
-    When hago clic en el primer producto de la lista
-    And hago clic en "Add to cart"
-    Then debería aparecer un alert con el mensaje "Product added"
-    When navego al carrito
-    Then el carrito debería tener productos en la lista
-    When realizo el pedido con:
-      | name | Test User |
-    Then debería aparecer un alert con el mensaje "Please fill out Name and Creditcard."
+  Scenario: Intentar realizar compra con solo nombre y sin tarjeta de crédito
+    Given que tengo el producto "Samsung galaxy s6" en mi carrito de compras
+    When intento realizar la compra ingresando solo el nombre "Test User" sin tarjeta
+    Then debería ver la advertencia de compra "Please fill out Name and Creditcard."
 
   @positive @cart
-  Scenario: Verificar detalles de confirmación de compra
-    When hago clic en el primer producto de la lista
-    And hago clic en "Add to cart"
-    Then debería aparecer un alert con el mensaje "Product added"
-    When navego al carrito
-    Then el carrito debería tener productos en la lista
-    When realizo el pedido con:
-      | name        | Test User       |
-      | country     | Uruguay         |
-      | city        | Montevideo      |
+  Scenario: Verificar detalles de la confirmación de compra
+    Given que tengo el producto "Samsung galaxy s6" en mi carrito de compras
+    When realizo la compra con los siguientes datos del comprador:
+      | name        | Test User        |
+      | country     | Uruguay          |
+      | city        | Montevideo       |
       | credit card | 1234567890123456 |
-      | month       | December        |
-      | year        | 2027            |
-    Then la confirmación debería mostrar los detalles de la compra
-    When cierro la confirmación de compra
-    Then el carrito debería estar vacío
+      | month       | December         |
+      | year        | 2027             |
+    Then la confirmación debería detallar la transacción para "Test User" y la tarjeta "1234567890123456"
+    And al cerrar la confirmación el carrito de compras debería quedar vacío

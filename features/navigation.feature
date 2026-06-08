@@ -4,28 +4,27 @@ Feature: Navegación del navbar en DemoBlaze
   Para verificar que todos los enlaces responden correctamente
 
   Background:
-    Given estoy en la página de inicio de DemoBlaze
+    Given que me encuentro en la página de inicio de DemoBlaze
 
   @positive @navigation
-  Scenario Outline: Navegar al link <link> del navbar
-    When hago clic en "<link>"
-    Then la navegación debería mostrar "<resultado>"
+  Scenario Outline: Navegar a la sección <sección> desde el menú de navegación
+    When accedo a la sección "<sección>" desde el menú de navegación
+    Then la aplicación debería mostrar la sección "<resultado>"
 
     Examples:
-      | link     | resultado |
+      | sección  | resultado |
       | Home     | principal |
       | Contact  | contacto  |
       | About us | acerca_de |
       | Cart     | carrito   |
 
   @negative @navigation @ui
-  Scenario Outline: Cerrar modal About us con <metodo>
-    When hago clic en "About us"
-    Then el modal About us debería estar visible
-    When cierro el modal About us con "<metodo>"
-    Then el modal About us debería estar cerrado
+  Scenario Outline: Cerrar la ventana Acerca de nosotros con <método>
+    When abro la sección informativa Acerca de nosotros
+    And cierro la ventana informativa usando el método "<método>"
+    Then la ventana informativa Acerca de nosotros debería cerrarse
 
     Examples:
-      | metodo |
+      | método |
       | Close  |
       | X      |

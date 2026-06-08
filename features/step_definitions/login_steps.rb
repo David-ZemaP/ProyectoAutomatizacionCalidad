@@ -1,25 +1,23 @@
-Cuando("completo el formulario de login con:") do |table|
+Cuando("inicio sesión con el usuario {string} y la contraseña {string}") do |username, password|
+  find("#login2", wait: 10).click
+  expect(page).to have_css("#logInModal.show", visible: true, wait: 5)
+  
   within("#logInModal") do
-    form.fill_in_fields(table, DemoblazeConstants::LOGIN_FIELDS)
+    find("#loginusername", wait: 5).set(username)
+    find("#loginpassword", wait: 5).set(password)
+    click_button("Log in")
   end
 end
 
-Cuando("ingreso {string} en el campo {string} del modal") do |value, field_name|
-  field_id = DemoblazeConstants::LOGIN_FIELD_IDS[field_name.downcase]
-  raise "Campo desconocido: #{field_name}" unless field_id
-
-  within("#logInModal") do
-    find("##{field_id}", wait: 5).set(value)
-  end
+Entonces("debería ver el saludo de bienvenida para el usuario {string}") do |username|
+  expect(page).to have_css("#nameofuser", visible: true, wait: 15)
+  expect(find("#nameofuser").text).to eq("Welcome #{username}")
+  expect(page).to have_css("#logout2", visible: true, wait: 10)
+  expect(page).to have_no_css("#login2", visible: true, wait: 10)
+  expect(page).to have_no_css("#signin2", visible: true, wait: 10)
 end
 
-Cuando("hago clic en el botón {string} del modal") do |button_text|
-  within("#logInModal") do
-    click_button(button_text)
-  end
-end
-
-Entonces("no debería haber iniciado sesión") do
+Entonces("no debería ingresar a la cuenta") do
   begin
     page.driver.browser.switch_to.alert.accept
   rescue Selenium::WebDriver::Error::NoSuchAlertError
@@ -31,38 +29,27 @@ Entonces("no debería haber iniciado sesión") do
   expect(page).to have_css("#signin2", visible: true, wait: 5)
 end
 
-Entonces("debería ver {string} en el navbar") do |expected_text|
-  expect(page).to have_css("#nameofuser", visible: true, wait: 10)
-  expect(find("#nameofuser").text).to eq(expected_text)
-  expect(page).to have_css("#logout2", visible: true, wait: 10)
-  expect(page).to have_no_css("#login2", visible: true, wait: 10)
-  expect(page).to have_no_css("#signin2", visible: true, wait: 10)
-end
-
-Entonces("el modal de login debería estar visible") do
+Cuando("abro el formulario de inicio de sesión") do
+  find("#login2", wait: 10).click
   expect(page).to have_css("#logInModal.show", visible: true, wait: 5)
-  expect(page).to have_css("#loginusername", visible: true, wait: 5)
-  expect(page).to have_css("#loginpassword", visible: true, wait: 5)
 end
 
-Cuando("cierro el modal de login con {string}") do |método|
-  case método
-  when "Close"
-    within("#logInModal") do
+Cuando("cierro el formulario usando el método {string}") do |método|
+  within("#logInModal") do
+    case método
+    when "Close"
       click_button("Close")
-    end
-  when "X"
-    within("#logInModal") do
+    when "X"
       find(".close", wait: 5).click
+    else
+      raise "Método de cierre desconocido: #{método}"
     end
-  else
-    raise "Método de cierre desconocido: #{método}"
   end
   sleep 0.5
-  page.execute_script("$('#logInModal').modal('hide')")
+  page.execute_script("$('#logInModal').modal('hide')") rescue nil
 end
 
-Entonces("el modal de login debería estar cerrado") do
+Entonces("el formulario de inicio de sesión debería cerrarse") do
   expect(page).to have_no_css("#logInModal.show", visible: true, wait: 5)
   expect(page).to have_no_css(".modal-backdrop", visible: true, wait: 5)
   expect(page).to have_css("#login2", visible: true, wait: 5)
