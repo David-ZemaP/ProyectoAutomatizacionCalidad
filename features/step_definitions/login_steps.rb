@@ -1,5 +1,5 @@
 Cuando("inicio sesión con el usuario {string} y la contraseña {string}") do |username, password|
-  find("#login2", wait: 10).click
+  find(:xpath, DemoblazeConstants::LOGIN_BUTTON).click
   expect(page).to have_css("#logInModal.show", visible: true, wait: 5)
   
   within("#logInModal") do
@@ -12,9 +12,9 @@ end
 Entonces("debería ver el saludo de bienvenida para el usuario {string}") do |username|
   expect(page).to have_css("#nameofuser", visible: true, wait: 15)
   expect(find("#nameofuser").text).to eq("Welcome #{username}")
-  expect(page).to have_css("#logout2", visible: true, wait: 10)
-  expect(page).to have_no_css("#login2", visible: true, wait: 10)
-  expect(page).to have_no_css("#signin2", visible: true, wait: 10)
+  expect(page).to have_xpath(DemoblazeConstants::LOGOUT_BUTTON, visible: true)
+  expect(page).to have_no_xpath(DemoblazeConstants::LOGIN_BUTTON, visible: true)
+  expect(page).to have_no_xpath(DemoblazeConstants::SIGNUP_BUTTON, visible: true)
 end
 
 Entonces("no debería ingresar a la cuenta") do
@@ -24,13 +24,13 @@ Entonces("no debería ingresar a la cuenta") do
   end
 
   expect(page).to have_no_css("#nameofuser", visible: true, wait: 5)
-  expect(page).to have_no_css("#logout2", visible: true, wait: 5)
-  expect(page).to have_css("#login2", visible: true, wait: 5)
-  expect(page).to have_css("#signin2", visible: true, wait: 5)
+  expect(page).to have_no_xpath(DemoblazeConstants::LOGOUT_BUTTON, visible: true)
+  expect(page).to have_xpath(DemoblazeConstants::LOGIN_BUTTON, visible: true)
+  expect(page).to have_xpath(DemoblazeConstants::SIGNUP_BUTTON, visible: true)
 end
 
 Cuando("abro el formulario de inicio de sesión") do
-  find("#login2", wait: 10).click
+  find(:xpath, DemoblazeConstants::LOGIN_BUTTON).click
   expect(page).to have_css("#logInModal.show", visible: true, wait: 5)
 end
 
@@ -52,5 +52,5 @@ end
 Entonces("el formulario de inicio de sesión debería cerrarse") do
   expect(page).to have_no_css("#logInModal.show", visible: true, wait: 5)
   expect(page).to have_no_css(".modal-backdrop", visible: true, wait: 5)
-  expect(page).to have_css("#login2", visible: true, wait: 5)
+  expect(page).to have_xpath(DemoblazeConstants::LOGIN_BUTTON, visible: true)
 end

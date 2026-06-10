@@ -1,4 +1,8 @@
 module DemoblazeConstants
+  LOGOUT_BUTTON = "//a[@id='logout2' and contains(text(), 'Log out')]".freeze
+  LOGIN_BUTTON = "//a[@id='login2' and contains(text(), 'Log in')]".freeze
+  SIGNUP_BUTTON = "//a[@id='signin2' and contains(text(), 'Sign up')]".freeze
+
   LOGIN_FIELDS = {
     "username" => { "id" => "loginusername", "type" => "input" },
     "password" => { "id" => "loginpassword", "type" => "input" }

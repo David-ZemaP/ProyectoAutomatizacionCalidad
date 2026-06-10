@@ -44,9 +44,9 @@ end
 Cuando("accedo a la sección {string} desde el menú de navegación") do |link_text|
   case link_text.downcase
   when "sign up"
-    find("#signin2", wait: 10).click
+    find(:xpath, DemoblazeConstants::SIGNUP_BUTTON).click
   when "log in"
-    find("#login2", wait: 10).click
+    find(:xpath, DemoblazeConstants::LOGIN_BUTTON).click
   else
     click_link(link_text, match: :first)
   end

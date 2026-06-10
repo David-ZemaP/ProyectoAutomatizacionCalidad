@@ -1,6 +1,6 @@
 def fill_and_submit_signup(username, password)
   unless page.has_css?("#signInModal.show", visible: true, wait: 2)
-    find("#signin2", wait: 10).click
+    find(:xpath, DemoblazeConstants::SIGNUP_BUTTON).click
     expect(page).to have_css("#signInModal.show", visible: true, wait: 5)
   end
 
@@ -45,7 +45,7 @@ Entonces("debería ver una advertencia de error de registro") do
 end
 
 Cuando("abro el formulario de registro") do
-  find("#signin2", wait: 10).click
+  find(:xpath, DemoblazeConstants::SIGNUP_BUTTON).click
   expect(page).to have_css("#signInModal.show", visible: true, wait: 5)
 end
 
@@ -67,5 +67,5 @@ end
 Entonces("el formulario de registro debería cerrarse") do
   expect(page).to have_no_css("#signInModal.show", visible: true, wait: 5)
   expect(page).to have_no_css(".modal-backdrop", visible: true, wait: 5)
-  expect(page).to have_css("#signin2", visible: true, wait: 5)
+  expect(page).to have_xpath(DemoblazeConstants::SIGNUP_BUTTON, visible: true)
 end
