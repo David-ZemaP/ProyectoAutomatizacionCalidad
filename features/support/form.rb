@@ -12,7 +12,7 @@ class Form
     when "combo_box"
       select value, from: identifier
     else
-      raise ArgumentError, "Unsupported field type: #{type}"
+      raise ArgumentError, "Tipo de campo no soportado: #{type}"
     end
   end
 

@@ -11,7 +11,7 @@ Feature: Carrito de compras en DemoBlaze
     When accedo a mi carrito de compras
     Then el carrito de compras debería estar vacío
 
-  @positive @cart
+  @positive @cart @smoke
   Scenario: Agregar un producto al carrito y verlo en la lista
     When selecciono el producto "Samsung galaxy s6"
     And agrego el producto seleccionado al carrito

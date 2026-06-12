@@ -6,7 +6,7 @@ Feature: Filtrado de productos por categoría en DemoBlaze
   Background:
     Given que me encuentro en la página de inicio de DemoBlaze
 
-  @positive @categories
+  @positive @categories @smoke
   Scenario: Filtrar productos por la categoría Teléfonos
     When selecciono la categoría "Phones" para filtrar
     Then debería ver la lista de productos correspondiente a la categoría "Phones"

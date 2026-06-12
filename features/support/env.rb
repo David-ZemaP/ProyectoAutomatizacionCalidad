@@ -5,17 +5,13 @@ require 'capybara/dsl'
 require 'capybara/cucumber'
 require 'selenium-webdriver'
 require_relative 'form'
+require_relative 'page_objects_helper'
+require_relative 'constants'
 
 ENV['USER']="Pepazo"
 ENV['PSW']="ILoveQA"
 
-Capybara.default_driver = :selenium
-
-Capybara.app_host = ENV["CAPYBARA_HOST"]
-
-Capybara.default_max_wait_time = 15
-Capybara.default_driver = :selenium
-Capybara.app_host = "https://www.demoblaze.com"
+Capybara.app_host = DemoblazeConstants::BASE_URL
 
 Capybara.register_driver :chrome_testing do |app|
   options = Selenium::WebDriver::Chrome::Options.new
@@ -24,8 +20,5 @@ end
 
 Capybara.default_driver = :chrome_testing
 Capybara.javascript_driver = :chrome_testing
-
 Capybara.run_server = false
-Capybara.default_driver = :chrome_testing
-Capybara.javascript_driver = :chrome_testing
-
+Capybara.default_max_wait_time = 15

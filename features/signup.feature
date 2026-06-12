@@ -6,7 +6,7 @@ Feature: Registro y validación de usuario en DemoBlaze
   Background:
     Given que me encuentro en la página de inicio de DemoBlaze
 
-  @positive @signup @first_run_only
+  @positive @signup @first_run_only 
   Scenario: Registro exitoso con validación mediante login
     When me registro con el nuevo usuario "qatest__12026" y la contraseña "12026testerqa__"
     And inicio sesión con el usuario "qatest__12026" y la contraseña "12026testerqa__"

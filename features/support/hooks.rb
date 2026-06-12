@@ -4,31 +4,22 @@ rescue
 end
 
 Before("@products") do
-  unless page.has_css?("#tbodyid", wait: 5)
-    visit "/"
-    expect(page).to have_css("#tbodyid", wait: 10)
-  end
+  pagina_inicio.cargar
+  pagina_inicio.validar_catalogo_visible
 end
 
 Before("@add_to_cart") do
-  @initial_cart_count = 0
-  if page.has_css?("#cartur", wait: 3)
-    cart_text = find("#cartur").text
-    if cart_text.match?(/\((\d+)\)/)
-      @initial_cart_count = cart_text.match(/\((\d+)\)/)[1].to_i
-    end
-  end
+  @initial_cart_count = componente_navbar.cantidad_carrito
 end
 
 Before("@navigation") do
-  unless page.has_css?("#next2", wait: 5)
-    visit "/"
-    expect(page).to have_css("#next2", wait: 10)
-  end
+  pagina_inicio.cargar
+  pagina_inicio.validar_paginacion_disponible
 end
 
 Before("@smoke") do
-  visit "/" unless page.has_css?("#navbarExample", wait: 3)
+  pagina_inicio.cargar
+  pagina_inicio.validar_navbar_visible
 end
 
 RUN_ONCE_DIR = File.join(__dir__, "..", ".run_once")

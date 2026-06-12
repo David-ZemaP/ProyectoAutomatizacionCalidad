@@ -6,8 +6,8 @@ Feature: Formulario de contacto en DemoBlaze
   Background:
     Given que me encuentro en la página de inicio de DemoBlaze
 
-  @positive @contact
-  Scenario: Enviar un mensaje de contacto válido
+  @positive @contact 
+  Scenario: Enviar mensaje de contacto exitosamente
     When envío un mensaje de contacto con el correo "test@example.com", nombre "Test User" y mensaje "Este es un mensaje de prueba"
     Then el sistema debería confirmar el envío con el mensaje "Thanks for the message!!"
 

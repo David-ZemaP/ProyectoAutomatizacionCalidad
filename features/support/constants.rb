@@ -1,4 +1,11 @@
 module DemoblazeConstants
+  BASE_URL = "https://www.demoblaze.com".freeze
+  RUTA_INICIO = "/".freeze
+  RUTA_CARRITO = "/cart.html".freeze
+  API_CATEGORIAS = "https://api.demoblaze.com/bycat".freeze
+
+  MENSAJE_PRODUCTO_AGREGADO = "Product added".freeze
+
   LOGOUT_BUTTON = "//a[@id='logout2' and contains(text(), 'Log out')]".freeze
   LOGIN_BUTTON = "//a[@id='login2' and contains(text(), 'Log in')]".freeze
   SIGNUP_BUTTON = "//a[@id='signin2' and contains(text(), 'Sign up')]".freeze
